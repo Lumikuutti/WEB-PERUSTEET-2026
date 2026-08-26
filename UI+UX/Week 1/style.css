@@ -1,0 +1,68 @@
+body {
+    margin: 0%;
+}
+
+
+nav {
+    background-color: rgb(15, 25, 54);
+    width: 80%;
+    height: 10%;
+    margin: auto;
+    padding: 1em;
+    border-radius: 10px;
+    align-content: center;
+}
+
+nav a {
+    display: inline-block;
+    color: aliceblue;
+    margin: auto;
+    padding-left: 1em;
+    padding-top: 1em;
+}
+
+nav a:hover {
+    color: aqua;
+}
+
+nav a:focus {
+    color: rgb(66, 49, 255);
+}
+nav img {
+    float: left;
+    padding-right: 2em;
+    padding-left: 2em;
+}
+
+main {
+    display: block;
+    margin: auto;
+    width: 80%;
+    height: 20rem;
+}
+
+footer {
+    background-color: rgb(55, 116, 160);
+    color: aliceblue;
+    padding: 3rem;
+    text-align: center;
+    height: 10%;
+}
+
+.about {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    padding: 4rem;
+    width: 75%;
+    background-color: rgb(116, 218, 200);
+    box-shadow: 2rem 3rem 10px rgb(15, 25, 54, 0.2);
+    align-content: center;
+}
+
+.about img {
+    float: left;
+    padding-right: 2em;
+    padding-left: 2em;
+}

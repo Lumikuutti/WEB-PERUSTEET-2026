@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <title>Week 2 Assingment</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            
+            <img src="https://placehold.co/100x50?text=Site+Logo" alt="site logo here">
+            <a href="home.html">Home</a>
+            <a href="home.html">Products</a>
+            <a href="home.html">Contact</a>
+            
+        </nav>
+    </header>
+
+    <button id="open_dialog">Click Me</button>
+
+    <dialog id="my_dialog">
+        <h1>Dialog Box</h1>
+        <p>This is a dialog box. You can put any content you want here.</p>
+        <button id="close_dialog">Close</button>
+    </dialog>
+
+    <main>
+        <p>To be added</p>
+    </main>
+
+    <div class="about">
+        <img src="https://placehold.co/200x200?text=About+Picture" alt="about picture">
+        <div class="about_text">
+            <h1>About Me</h1>
+            <h2>Did you know I know latin?</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque deleniti fuga minima necessitatibus omnis
+                reiciendis saepe voluptas! Aspernatur consectetur, deleniti, dolorum eum magnam repellat sequi suscipit ullam
+                vel voluptas voluptate?</p>
+        </div>
+    </div>
+    <footer> Copyright Stu.L </footer>
+
+    <script>
+        const dialog = document.querySelector('dialog');
+        const btnOpen = document.querySelector("#open_dialog");
+        const btnClose = document.querySelector("#close_dialog");
+
+        const openDialog = () => {
+            dialog.showModal();
+        }
+        const closeDialog = () => {
+            dialog.close();
+        }
+
+        btnOpen.addEventListener("click", openDialog);
+        btnClose.addEventListener("click", closeDialog)
+
+        
+        
+    </script>
+    
+</body>
+
+</html>
