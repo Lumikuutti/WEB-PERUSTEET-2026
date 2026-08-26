@@ -66,3 +66,16 @@ footer {
     padding-right: 2em;
     padding-left: 2em;
 }
+
+.testbox {
+    background-color: blue;
+    background-image: url(he_cri.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 700px;
+    height: 720px;
+    margin: auto;
+    position: relative;
+}
