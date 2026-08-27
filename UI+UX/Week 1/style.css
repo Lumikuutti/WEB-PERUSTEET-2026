@@ -58,11 +58,10 @@ footer {
     width: 75%;
     background-color: rgb(116, 218, 200);
     box-shadow: 2rem 3rem 10px rgb(15, 25, 54, 0.2);
-    align-content: center;
 }
 
 .about img {
     float: left;
-    padding-right: 2em;
-    padding-left: 2em;
+    position: relative;
+    margin-right: 2em;
 }
