@@ -1,10 +1,20 @@
 'use strict';
 
-const input = parseInt(prompt('Give me a natural number. I will calculate and present the sum of all natural number up to and including it.'));
-let sum = 0;
-
-for (let i = 1; i <= input; i++) {
-    sum += i;
+function sortArray (array, order) {
+    array.sort((a,b) => a-b);
+    if (order == 'desc'){
+        array.reverse()
+    }
 }
 
-document.querySelector('#target').innerHTML = 'The sum is: ' + sum;
+let numbers = [5,4,7,8,1,2,9];
+
+console.log('Original array: ' + numbers);
+
+sortArray(numbers, 'desc');
+
+console.log('Sorted array: ' + numbers);
+
+sortArray(numbers, 'asc');
+
+console.log('Re-Sorted array: ' + numbers);
