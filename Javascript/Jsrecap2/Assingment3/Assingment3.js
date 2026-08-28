@@ -1,17 +1,35 @@
 'use strict';
 
-const side1 = parseInt(prompt('Give the first side of the triangle. (Integer)'));
-const side2 = parseInt(prompt('Give the second side of the triangle. (Integer)'));
-const side3 = parseInt(prompt('Give the final side of the triangle. (Integer)'));
+const numbers = [];
+let run = true;
+while (run) {
+    let number = prompt('Enter a number (Integer), or Done to stop.');
+    if (number == 'done' || number == 'Done') {
+        run = false;
+    }
 
-if (side1 == side2 && side1 == side3) {
-    document.querySelector('#target').innerHTML = 'The triangle is equilateral.';
+    else {
+        number = parseInt(number);
+        numbers.push(number);
+    }
+    
 }
 
-else if (side1 == side2 || side1 == side3 || side2 == side3 ) {
-    document.querySelector('#target').innerHTML = 'The triangle is isosceles.';
+const even_numbers = [];
+for (let index of numbers) {
+    let check = index;
+    if ((check % 2) == 0){
+        console.log(check)
+        even_numbers.push(check);
+    }
+
 }
 
+if (even_numbers.length > 0){
+ document.querySelector('#target').innerHTML = ('Even Numbers: ' + even_numbers);   
+}
 else {
-    document.querySelector('#target').innerHTML = 'The triangle is scalene.';
+    document.querySelector('#target').innerHTML = ('Even Numbers: None');
 }
+
+document.querySelector('p').innerHTML = ('The program has ended.');
