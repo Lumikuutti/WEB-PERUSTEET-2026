@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <title>Week 2 Assingment</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            
+            <img src="../../art_assets/Fin_fanatic.png" alt="Placeholder for a site logo">
+            <a href="home.html">Home</a>
+            <a href="home.html">Products</a>
+            <a href="home.html">Contact</a>
+            
+        </nav>
+    </header>
+
+    <dialog id="my_dialog">
+        <h1>You bapped me!!!</h1>
+        <button id="close_dialog">Close</button>
+    </dialog>
+
+    <main>
+        <button id="open_dialog">Bap me!</button>
+        <div class="testbox"></div>
+    </main>
+
+    <div class="about">
+        <img src="../../art_assets/Sleepy_Moss.png" alt="sleep gif by Lumikuutti">
+        <div class="about_text">
+            <h1>About Me</h1>
+            <h2>Did you know I know latin?</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque deleniti fuga minima necessitatibus omnis
+                reiciendis saepe voluptas! Aspernatur consectetur, deleniti, dolorum eum magnam repellat sequi suscipit ullam
+                vel voluptas voluptate?</p>
+        </div>
+    </div>
+    <footer> Copyright Stu.L </footer>
+
+    <script>
+        const dialog = document.querySelector('dialog');
+        const btnOpen = document.querySelector("#open_dialog");
+        const btnClose = document.querySelector("#close_dialog");
+
+        const openDialog = () => {
+            dialog.showModal();
+        }
+        const closeDialog = () => {
+            dialog.close();
+        }
+
+        btnOpen.addEventListener("click", openDialog);
+        btnClose.addEventListener("click", closeDialog)
+
+        
+        
+    </script>
+    
+</body>
+
+</html>
