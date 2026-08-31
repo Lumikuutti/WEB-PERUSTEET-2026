@@ -96,8 +96,9 @@ footer {
     background-position: center;
     background-size: contain;
     background-attachment: scroll;
-    width: 1200px;
-    height: 720px;
+    width: 80%;
+    height: 50vh;
+    min-height: 300px;
     margin: auto;
     margin-bottom: 5%;
     position: relative;
