@@ -99,13 +99,14 @@ footer {
     width: 80%;
     height: 50vh;
     min-height: 300px;
+    min-width: 600px;
     margin: auto;
     margin-bottom: 5%;
     position: relative;
 }
 
 #open_dialog {
-    margin-left: 46%;
+    margin-left: auto;
     margin-top: 5%;
     border-color: var(--smart-blue);
     background-color: var(--bright-snow);
@@ -130,6 +131,7 @@ dialog {
     border-radius: 10px;
     border-color: var(--smart-blue);
     color: var(--cornflower-blue);
+    position: absolute;
 }
 
 dialog h1 {
@@ -150,4 +152,65 @@ dialog button {
 
 dialog button:hover {
     background-color: var(--smart-blue);
+}
+
+#banner {
+    background-image: url(../../art_assets/baby_seal_bweuh.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: scroll;
+    width: 82%;
+    height: auto;
+    min-height: 200px;
+    margin: auto;
+    margin-bottom: 5%;
+    position: relative;
+}
+
+@media screen and (max-width: 760px) {
+    .about img {
+        float: none;
+    }
+    
+    .testbox {
+        height: auto;
+        min-width: 460px;
+    }
+
+    #banner {
+        background-position: left;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .about {
+        padding: 2em;
+    }
+
+    .about img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    nav a {
+    display: block;
+    }
+
+    nav img {
+        float: none;
+        padding-left: 1em;
+    }
+
+    dialog {
+        height: 30rem;
+    }
+
+    dialog button {
+        margin-top: 19rem;
+    }
+
+    .testbox {
+       background-size: contain;
+    }
 }
