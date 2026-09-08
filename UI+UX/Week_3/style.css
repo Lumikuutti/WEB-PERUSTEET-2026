@@ -123,11 +123,9 @@ footer {
 }
 
 dialog {
-    background-image: url(../../art_assets/bapped.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 20rem;
-    width: 20rem;
+    background-color: var(--bright-snow);
+    height: 26rem;
+    width: 21rem;
     border-radius: 10px;
     border-color: var(--smart-blue);
     color: var(--cornflower-blue);
@@ -139,8 +137,23 @@ dialog h1 {
     text-align: center;
 }
 
+#bapped {
+    background-image: url(../../art_assets/bapped.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 13rem;
+}
+
+input {
+    margin: 0.5rem;
+}
+
+input:invalid {
+    color: rgba(255, 0, 0, 0.418);
+}
+
 dialog button {
-    margin-top: 14rem;
+    margin-top: 1rem;
     margin-left: 43%;
     position: relative;
     background-color: var(--dusk-blue);

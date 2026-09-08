@@ -178,8 +178,10 @@
 
         <!-- GET Formi -->
         <form>
-          <label for="name">Nimi</label>
-          <input type="text" id="name" name="name" />
+          <div class="form-group">
+            <label for="name">Nimi</label>
+            <input type="text" id="name" name="name" />
+          </div>
           <button type="submit">Lähetä</button>
         </form>
 
@@ -217,7 +219,22 @@ response.json()
         </div>
 
         <form id="user-form">
-          <p>KATSO VIDEO JA TÄYDENNÄ</p>
+          <label for="name2">Nimi</label>
+          <input
+            type="text"
+            name="name"
+            id="name2"
+            placeholder="Aku"
+            required
+          />
+          <label for="work">Työ</label>
+          <input
+            type="text"
+            name="job"
+            id="work"
+            placeholder="Ankka"
+            required
+          />
           <button type="submit">Luo käyttäjä</button>
         </form>
 
@@ -252,25 +269,83 @@ response.json()
             />
           </div>
           <!-- TODO 2: Sähköposti: label + email input, id/name email, required, placeholder matti@example.com -->
+          <label for="email">Sähköposti</label
+          ><input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="matti@example.com"
+          />
           <div class="form-group"></div>
           <!-- TODO 3: Salasana: label + password input, id/name password, required, minlength 8 + teksti "Vähintään 8 merkkiä." -->
+          <label for="password">Salasana</label
+          ><input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="8"
+          />
           <div class="form-group"></div>
           <!-- TODO 4: Ikä: label + number input, id/name age, min 18, max 120 -->
+          <label for="age">Ikä</label
+          ><input type="number" id="age" name="age" min="18" max="120" />
           <div class="form-group"></div>
           <!-- TODO 5: Syntymäpäivä: label + date input, id/name birthdate -->
+          <label for="birthdate">Syntymäpäivä</label
+          ><input type="date" id="birthdate" name="birthdate" />
           <div class="form-group"></div>
           <!-- TODO 6: Kaupunki: label + select id/name city. Optionit: ""/Valitse kaupunki, helsinki/Helsinki, espoo/Espoo, vantaa/Vantaa, other/Muu -->
+          <label for="city">Kaupunki</label>
+          <select id="city" name="city">
+            <option value="Helsinki">Helsinki</option>
+            <option value="Espoo">Espoo</option>
+            <option value="Vantaa">Vantaa</option>
+            <option value="Other">Muu</option>
+          </select>
           <div class="form-group"></div>
           <!-- TODO 7: Lisätietoja: label + textarea id/name message, rows 4, maxlength 200, placeholder "Kirjoita halutessasi lisätietoja" -->
+          <label for="message">Lisätietoja</label
+          ><input
+            type="textarea"
+            id="message"
+            name="message"
+            rows="4"
+            maxlength="200"
+            placeholder="Kirjoita halutessasi lisätietoja"
+          />
           <div class="form-group"></div>
           <fieldset>
             <legend>Toimitustapa *</legend>
             <!-- TODO 8: kaksi radiota samalla name="delivery": pickup/Nouto (required) ja delivery/Kotiinkuljetus -->
+            <input
+              type="radio"
+              id="pickup"
+              name="delivery"
+              value="Nouto"
+              required
+            />
+            <label for="pickup">Nouto</label>
+            <input
+              type="radio"
+              id="delivery"
+              name="delivery"
+              value="Kotiinkuljetus"
+            />
+            <label for="pickup">Kotiinkuljetus</label>
             <div class="inline-group"></div>
           </fieldset>
           <fieldset>
             <legend>Kiinnostuksen kohteet</legend>
             <!-- TODO 9: kolme checkboxia samalla name="interests": html/HTML, css/CSS, javascript/JavaScript -->
+            <input type="checkbox" id="html" name="interests" />
+            <label for="html">HTML</label>
+            <input type="checkbox" id="css" name="interests" />
+            <label for="css">CSS</label>
+            <input type="checkbox" id="javascript" name="interests" />
+            <label for="javascript">Javascript</label>
+
             <div class="inline-group"></div>
           </fieldset>
           <label
@@ -322,13 +397,25 @@ POST, application/json
 
     <script>
       const baseUrl = "https://reqres.in/api/";
-      const API_KEY = "Oma-Api-Avaimesi";
+      const API_KEY = "free_user_3J3N1c2K7LuWDWsKp5vxvlicOfS";
 
       // Luo createUser funktio
       // Voit käyttää samaa kun Ilkan tehtävässä
 
       const createUser = async (user) => {
         console.log("Seuraa video");
+        const options = {
+          method: "POST",
+          headers: {
+            "x-api-key": API_KEY,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        };
+        const response = await fetch(baseUrl + "users", options);
+        const data = await response.json();
+        console.log(data);
+        return data;
       };
 
       // Haetaan ReqRes post formi sekä kenttä johon tulostetaan
@@ -338,6 +425,14 @@ POST, application/json
 
       userForm.addEventListener("submit", async (event) => {
         console.log("Seuraa video");
+        event.preventDefault();
+        const user = {
+          name: document.querySelector("#name2").value,
+          job: document.querySelector("#work").value,
+        };
+
+        const createdUser = await createUser(user);
+        userOutput.textContent = JSON.stringify(createdUser, null, 2);
       });
 
       // Alla olevaa formia ei lähetetä backendille. JavaScript näyttää formidatan JSONina.
