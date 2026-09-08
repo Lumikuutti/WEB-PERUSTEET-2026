@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML-formit - itseopiskelu</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f5f7;
+        color: #222;
+        line-height: 1.5;
+      }
+      header {
+        background: #222;
+        color: #fff;
+        padding: 2rem;
+      }
+      header h1 {
+        margin-top: 0;
+      }
+      main {
+        max-width: 900px;
+        margin: auto;
+        padding: 2rem;
+      }
+      section {
+        background: #fff;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+      }
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+      .form-group {
+        display: grid;
+        gap: 0.35rem;
+      }
+      .inline-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      fieldset {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 1rem;
+      }
+      legend {
+        font-weight: bold;
+      }
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.65rem;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+      }
+      input[type="radio"],
+      input[type="checkbox"] {
+        width: auto;
+      }
+      button {
+        width: fit-content;
+        padding: 0.7rem 1.2rem;
+        border: 0;
+        border-radius: 5px;
+        background: #222;
+        color: #fff;
+        cursor: pointer;
+      }
+      code {
+        background: #eee;
+        padding: 0.15rem 0.35rem;
+        border-radius: 4px;
+      }
+      pre {
+        background: #111;
+        color: #eee;
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+      .note {
+        background: #fff8d8;
+        padding: 1rem;
+        margin-top: 30px;
+        border-left: 4px solid #d6a900;
+      }
+      .task,
+      .flow {
+        background: #eef6ff;
+        padding: 1rem;
+        border-left: 4px solid #3978c5;
+        margin-bottom: 15px;
+      }
+      .result {
+        margin-top: 1rem;
+      }
+      a {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>HTML-formit - demo + kotitehtävä</h1>
+      <p>
+        GET-formi, POST JSON-datana ReqResiin ja monipuolinen formiharjoitus.
+      </p>
+    </header>
+    <main>
+      <section>
+        <h2>Tavoitteet ja linkit</h2>
+        <p>
+          Opit formien perusrakenteen, <code>name/value</code>-parit, GETin
+          query-parametrit, FormDatan, JSONin, fetchin ja HTML-validoinnin.
+        </p>
+        <ul>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form"
+              >MDN: &lt;form&gt;</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input"
+              >MDN: &lt;input&gt;</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label"
+              >MDN: &lt;label&gt;</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
+              >MDN: form validation</a
+            >
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData"
+              >MDN: FormData</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+              >MDN: Fetch API</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>1. GET-formi - demo</h2>
+        <p>
+          GET sopii esimerkiksi hakutoimintoon. Selain muodostaa kentistä
+          <code>name=value</code>-pareja ja lisää ne URLiin.
+        </p>
+
+        <!-- GET Formi -->
+        <form>
+          <label for="name">Nimi</label>
+          <input type="text" id="name" name="name" />
+          <button type="submit">Lähetä</button>
+        </form>
+
+        <div class="note">
+          <strong>Huomaa:</strong> <code>id</code> yhdistää labelin inputtiin,
+          mutta <code>name</code> määrää millä nimellä arvo lähetetään.
+        </div>
+      </section>
+
+      <section>
+        <h2>2. POST-formi - valmis ReqRes-demo</h2>
+        <p>
+          JavaScript estää formin normaalin lähetyksen, lukee kentät, muodostaa
+          JS-olion ja lähettää sen JSONina APIin.
+        </p>
+        <div class="flow">
+          <pre>
+HTML form
+  ↓
+FormData
+  ↓
+Object.fromEntries()
+  ↓
+JavaScript-olio
+  ↓
+JSON.stringify()
+  ↓
+POST + application/json
+  ↓
+ReqRes API
+  ↓
+response.json()
+    </pre
+          >
+        </div>
+
+        <form id="user-form">
+          <p>KATSO VIDEO JA TÄYDENNÄ</p>
+          <button type="submit">Luo käyttäjä</button>
+        </form>
+
+        <div class="result">
+          <h3>API-vastaus</h3>
+          <pre id="user-output">Lähetä formi nähdäksesi vastauksen.</pre>
+        </div>
+        <div class="note">
+          <strong>Huomaa:</strong> FormData lukee HTML-formin kentät
+          JavaScriptiin. API:lle lähetetään tässä JSONia.
+        </div>
+      </section>
+
+      <section>
+        <h2>3. Kotitehtävä - rakenna monipuolinen formi</h2>
+        <div class="task">
+          Täydennä kaikki <strong>TODO</strong>-kohdat. Älä muuta tehtävän
+          JavaScriptiä. Kun formi on valmis, sen data tulostuu JSON-muodossa.
+        </div>
+        <form id="register-form">
+          <!-- TODO 1: Nimi: label + text input, id/name name, required, minlength 2, maxlength 50, placeholder Matti Meikäläinen -->
+          <div class="form-group">
+            <label for="name">Nimi *</label
+            ><input
+              type="text"
+              id="name"
+              name="name"
+              required
+              minlength="2"
+              maxlength="50"
+              placeholder="Matti Meikäläinen"
+            />
+          </div>
+          <!-- TODO 2: Sähköposti: label + email input, id/name email, required, placeholder matti@example.com -->
+          <div class="form-group"></div>
+          <!-- TODO 3: Salasana: label + password input, id/name password, required, minlength 8 + teksti "Vähintään 8 merkkiä." -->
+          <div class="form-group"></div>
+          <!-- TODO 4: Ikä: label + number input, id/name age, min 18, max 120 -->
+          <div class="form-group"></div>
+          <!-- TODO 5: Syntymäpäivä: label + date input, id/name birthdate -->
+          <div class="form-group"></div>
+          <!-- TODO 6: Kaupunki: label + select id/name city. Optionit: ""/Valitse kaupunki, helsinki/Helsinki, espoo/Espoo, vantaa/Vantaa, other/Muu -->
+          <div class="form-group"></div>
+          <!-- TODO 7: Lisätietoja: label + textarea id/name message, rows 4, maxlength 200, placeholder "Kirjoita halutessasi lisätietoja" -->
+          <div class="form-group"></div>
+          <fieldset>
+            <legend>Toimitustapa *</legend>
+            <!-- TODO 8: kaksi radiota samalla name="delivery": pickup/Nouto (required) ja delivery/Kotiinkuljetus -->
+            <div class="inline-group"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Kiinnostuksen kohteet</legend>
+            <!-- TODO 9: kolme checkboxia samalla name="interests": html/HTML, css/CSS, javascript/JavaScript -->
+            <div class="inline-group"></div>
+          </fieldset>
+          <label
+            ><input type="checkbox" name="terms" value="accepted" required />
+            Hyväksyn käyttöehdot *</label
+          ><button type="submit">Näytä formidata</button>
+        </form>
+
+        <div class="result">
+          <h3>Formidata</h3>
+          <pre id="register-output">Lähetä formi nähdäksesi datan.</pre>
+        </div>
+      </section>
+
+      <section>
+        <h2>4. Mitä id, name ja value tekevät?</h2>
+        <pre>
+&lt;label for="email"&gt;Sähköposti&lt;/label&gt;
+&lt;input id="email" name="email" value="matti@example.com"&gt;</pre
+        >
+        <ul>
+          <li><code>id</code> yhdistää labelin inputtiin.</li>
+          <li><code>name</code> määrää avaimen formidataan.</li>
+          <li><code>value</code> on kentän arvo.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>5. Sama data voidaan lähettää eri tavoilla</h2>
+        <pre>
+GET
+/search?q=javascript
+
+POST, application/x-www-form-urlencoded
+name=Aku&job=Ankka
+
+POST, application/json
+{
+  "name": "Aku",
+  "job": "Ankka"
+}</pre
+        >
+        <div class="note">
+          <strong>Myöhemmin:</strong> tiedostojen lähettämisessä käytetään usein
+          <code>multipart/form-data</code>-muotoa. Tiedostojen lähettäminen ei
+          kuulu tähän tehtävään.
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const baseUrl = "https://reqres.in/api/";
+      const API_KEY = "Oma-Api-Avaimesi";
+
+      // Luo createUser funktio
+      // Voit käyttää samaa kun Ilkan tehtävässä
+
+      const createUser = async (user) => {
+        console.log("Seuraa video");
+      };
+
+      // Haetaan ReqRes post formi sekä kenttä johon tulostetaan
+
+      const userForm = document.querySelector("#user-form");
+      const userOutput = document.querySelector("#user-output");
+
+      userForm.addEventListener("submit", async (event) => {
+        console.log("Seuraa video");
+      });
+
+      // Alla olevaa formia ei lähetetä backendille. JavaScript näyttää formidatan JSONina.
+      // Kotitehtävän formin JS on valmis. Älä muuta.
+
+      const registerForm = document.querySelector("#register-form");
+      const registerOutput = document.querySelector("#register-output");
+
+      registerForm.addEventListener("submit", (event) => {
+        console.log("here");
+        event.preventDefault();
+
+        const formData = new FormData(registerForm);
+        const data = Object.fromEntries(formData);
+
+        data.interests = formData.getAll("interests");
+
+        registerOutput.textContent = JSON.stringify(data, null, 2);
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
