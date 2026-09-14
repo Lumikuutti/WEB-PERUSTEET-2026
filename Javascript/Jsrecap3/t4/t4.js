@@ -786,6 +786,8 @@ function success(position) {
       (b.location.coordinates[1] - x) ** 2 +
         (b.location.coordinates[0] - y) ** 2
     );
+
+    return distance1 - distance2;
   });
   console.log(restaurants);
   const target = document.querySelector('table');
