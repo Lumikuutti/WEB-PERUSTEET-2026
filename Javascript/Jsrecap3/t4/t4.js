@@ -778,13 +778,13 @@ function success(position) {
   console.log(y);
   restaurants.sort((a, b) => {
     let distance1 = Math.sqrt(
-      (a.location.coordinates[1] - x) ** 2 +
-        (a.location.coordinates[0] - y) ** 2
+      (a.location.coordinates[0] - x) ** 2 +
+        (a.location.coordinates[1] - y) ** 2
     );
 
     let distance2 = Math.sqrt(
-      (b.location.coordinates[1] - x) ** 2 +
-        (b.location.coordinates[0] - y) ** 2
+      (b.location.coordinates[0] - x) ** 2 +
+        (b.location.coordinates[1] - y) ** 2
     );
 
     return distance1 - distance2;

@@ -769,5 +769,59 @@ const restaurants = [
     __v: 0,
   },
 ];
-
+//for some reason the array's coordinates are in the order of longitude, latitude, even though most expect it the other way (lat,long)
 // your code here
+function success(position) {
+  const x = position.coords.longitude;
+  console.log(x);
+  const y = position.coords.latitude;
+  console.log(y);
+  // restaurants.sort((a, b) => {
+  //   let distance1 = Math.sqrt(
+  //     (a.location.coordinates[0] - x) ** 2 +
+  //       (a.location.coordinates[1] - y) ** 2
+  //   );
+
+  //   let distance2 = Math.sqrt(
+  //     (b.location.coordinates[0] - x) ** 2 +
+  //       (b.location.coordinates[1] - y) ** 2
+  //   );
+
+  //   return distance1 - distance2;
+  // });
+  // console.log(restaurants);
+  // const target = document.querySelector('table');
+  // for (const restaurant of restaurants) {
+  //   const tr = document.createElement('tr');
+
+  //   const name_td = document.createElement('td');
+  //   name_td.textContent = restaurant.name;
+
+  //   const address_td = document.createElement('td');
+  //   address_td.textContent = restaurant.address;
+
+  //   tr.append(name_td, address_td);
+
+  //   target.append(tr);
+  // }
+  var map = L.map('map').setView([y, x], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  var marker = L.marker([y, x]).addTo(map);
+  marker.bindPopup('Your location');
+
+  for (const restaurant of restaurants) {
+    const longitude = restaurant.location.coordinates[0];
+    const latitude = restaurant.location.coordinates[1];
+    var restaurant_location = L.marker([latitude, longitude]).addTo(map);
+    restaurant_location.bindPopup(
+      '<h3>' + restaurant.name + '</h3>' + '<p>' + restaurant.address + '</p>'
+    );
+  }
+}
+
+navigator.geolocation.getCurrentPosition(success);
