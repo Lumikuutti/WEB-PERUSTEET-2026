@@ -771,3 +771,64 @@ const restaurants = [
 ];
 
 // your code here
+restaurants.sort((a, b) => {
+  return a.name > b.name;
+});
+
+const target = document.querySelector('table');
+const dialog = document.querySelector('dialog');
+for (const restaurant of restaurants) {
+  const tr = document.createElement('tr');
+
+  const name_td = document.createElement('td');
+  name_td.textContent = restaurant.name;
+
+  const address_td = document.createElement('td');
+  address_td.textContent = restaurant.address;
+
+  tr.append(name_td, address_td);
+  tr.addEventListener('click', function (evt) {
+    const prev = document.querySelector('.highlight');
+    if (prev) {
+      prev.classList.toggle('highlight');
+    }
+
+    dialog.innerHTML = '';
+
+    tr.classList.toggle('highlight');
+
+    const h1 = document.createElement('h1');
+    h1.textContent = restaurant.name;
+
+    const table = document.createElement('table');
+    const info_address = document.createElement('td');
+    info_address.textContent = restaurant.address;
+
+    const postCode = document.createElement('td');
+    postCode.textContent = restaurant.postalCode;
+
+    const city = document.createElement('td');
+    city.textContent = restaurant.city;
+
+    const phone = document.createElement('td');
+    phone.textContent = restaurant.phone;
+
+    const company = document.createElement('td');
+    company.textContent = restaurant.company;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+    closeBtn.id = 'closeBtn';
+
+    closeBtn.addEventListener('click', function (evt) {
+      dialog.close();
+    });
+
+    table.append(info_address, postCode, city, phone, company);
+    dialog.append(closeBtn, h1, table);
+
+    dialog.showModal();
+  });
+
+  target.append(tr);
+}
