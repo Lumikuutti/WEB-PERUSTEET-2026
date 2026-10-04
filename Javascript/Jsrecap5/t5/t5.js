@@ -28,6 +28,9 @@ async function getRestaurants() {
     restaurants = await fetchData(apiURL + '/restaurants');
     navigator.geolocation.getCurrentPosition(success, error, locationOptions);
   } catch (error) {
+    if (restaurants.length < 1) {
+      alert('Failed to get restaurants.');
+    }
     console.error(error.message);
   }
 }
@@ -83,14 +86,47 @@ function renderRestaurants() {
       });
 
       table.append(info_address, postCode, city, phone, company);
+      dialog.append(closeBtn, h1, table);
 
       //new stuff
       const dailyMenu = await fetchData(
         `${apiURL}/restaurants/daily/${restaurant._id}/fi`
       );
-      console.log(dailyMenu.courses);
+
+      const menuTable = document.createElement('table');
+      menuTable.id = 'menu';
+
+      try {
+        console.log(dailyMenu.courses);
+        for (const item of dailyMenu.courses) {
+          const row = document.createElement('tr');
+          const mealName = document.createElement('td');
+          mealName.textContent = item.name;
+
+          const mealPrice = document.createElement('td');
+          mealPrice.textContent = item.price;
+
+          const mealDiets = document.createElement('td');
+          mealDiets.textContent = item.diets;
+
+          row.append(mealName, mealPrice, mealDiets);
+          menuTable.append(row);
+        }
+        if (dailyMenu.courses.length < 1) {
+          const noMenu = document.createElement('p');
+          noMenu.textContent = 'No daily menu available';
+          menuTable.append(noMenu);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
       // ^
-      dialog.append(closeBtn, h1, table);
+
+      try {
+        dialog.append(menuTable);
+      } catch (error) {
+        console.log(error.message);
+      }
 
       dialog.showModal();
     });
@@ -102,20 +138,24 @@ function renderRestaurants() {
 function success(position) {
   const x = position.coords.longitude;
   const y = position.coords.latitude;
-  restaurants.sort((a, b) => {
-    let distance1 = Math.sqrt(
-      (a.location.coordinates[0] - x) ** 2 +
-        (a.location.coordinates[1] - y) ** 2
-    );
+  try {
+    restaurants.sort((a, b) => {
+      let distance1 = Math.sqrt(
+        (a.location.coordinates[0] - x) ** 2 +
+          (a.location.coordinates[1] - y) ** 2
+      );
 
-    let distance2 = Math.sqrt(
-      (b.location.coordinates[0] - x) ** 2 +
-        (b.location.coordinates[1] - y) ** 2
-    );
+      let distance2 = Math.sqrt(
+        (b.location.coordinates[0] - x) ** 2 +
+          (b.location.coordinates[1] - y) ** 2
+      );
 
-    return distance1 - distance2;
-  });
-  renderRestaurants();
+      return distance1 - distance2;
+    });
+    renderRestaurants();
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 // Function to be called if an error occurs while retrieving location information
