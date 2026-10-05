@@ -38,6 +38,7 @@ async function getRestaurants() {
 function renderRestaurants() {
   const target = document.querySelector('table');
   const dialog = document.querySelector('dialog');
+  const dialogDiv = document.getElementById('restaurant-info');
   for (const restaurant of restaurants) {
     const tr = document.createElement('tr');
 
@@ -54,7 +55,7 @@ function renderRestaurants() {
         prev.classList.toggle('highlight');
       }
 
-      dialog.innerHTML = '';
+      dialogDiv.innerHTML = '';
 
       tr.classList.toggle('highlight');
 
@@ -86,7 +87,7 @@ function renderRestaurants() {
       });
 
       table.append(info_address, postCode, city, phone, company);
-      dialog.append(closeBtn, h1, table);
+      dialogDiv.append(closeBtn, h1, table);
 
       //new stuff
       const dailyMenu = await fetchData(
@@ -123,7 +124,7 @@ function renderRestaurants() {
       // ^
 
       try {
-        dialog.append(menuTable);
+        dialogDiv.append(menuTable);
       } catch (error) {
         console.log(error.message);
       }
