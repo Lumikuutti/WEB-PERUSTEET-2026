@@ -24,7 +24,7 @@ async function getRestaurants() {
 }
 
 function renderRestaurants() {
-  const target = document.querySelector('table');
+  const target = document.querySelector('tbody');
   target.innerHTML = '';
 
   const dialog = document.querySelector('dialog');
