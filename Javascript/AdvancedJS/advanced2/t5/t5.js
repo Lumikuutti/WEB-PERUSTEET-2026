@@ -28,7 +28,7 @@ function renderRestaurants(restaurantsArray) {
 
   const dialog = document.querySelector('dialog');
 
-  restaurants.forEach(restaurant => {
+  restaurantsArray.forEach(restaurant => {
     const tr = restaurantRow(restaurant);
 
     tr.addEventListener('click', async function (evt) {
@@ -89,7 +89,6 @@ document.querySelector('#compass-button').addEventListener('click', () => {
   const compassRestaurants = restaurants.filter(
     restaurant => restaurant.company === 'Compass Group'
   );
-
   renderRestaurants(compassRestaurants);
 });
 
