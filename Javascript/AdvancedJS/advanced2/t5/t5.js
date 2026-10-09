@@ -10,11 +10,6 @@ const locationOptions = {
 };
 
 let restaurants = [];
-
-const compassButton = document.getElementById('compass-button');
-const sodexoButton = document.getElementById('sodexo-button');
-const resetButton = document.getElementById('reset-button');
-
 async function getRestaurants() {
   try {
     restaurants = await fetchData(apiURL + '/restaurants');
