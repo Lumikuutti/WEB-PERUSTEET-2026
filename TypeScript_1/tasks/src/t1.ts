@@ -4,7 +4,6 @@ type Item = {
     quantity: number
 }
 
-
 // TODO: Write type (or interface) Item
 // TODO: Define the properties 'name', 'price', and 'quantity' within the type
 
