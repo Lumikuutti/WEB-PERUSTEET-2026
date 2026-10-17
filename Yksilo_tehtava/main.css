@@ -1,0 +1,104 @@
+#nav {
+  background-color: aquamarine;
+  font-family: sans-serif;
+  width: 85%;
+  height: 7vh;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+#nav #logo img {
+  height: 7vh;
+  width: auto;
+}
+
+body {
+  background-color: #f0f0f0;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#main {
+  background-color: rgb(107, 175, 153);
+  width: 85%;
+  height: 90vh;
+  margin: auto;
+  display: flex;
+}
+
+#left {
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  flex: 1.5;
+}
+
+#searchBar {
+  flex: 1;
+  display: flex;
+  margin: 0.7em;
+  gap: 5px;
+}
+
+
+#searchBar input {
+  flex: 4.5;
+}
+
+#filterButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 2;
+  justify-content: center;
+}
+
+#restaurants {
+  flex: 12;
+  overflow: auto;
+}
+
+#right{
+  flex: 1;
+}
+
+#info {
+  overflow: auto;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+th {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+
+td {
+  border-bottom: 1px solid #ccc;
+  padding: 0.5em 1em;
+}
+
+.highlight {
+  font-weight: bold;
+  background-color: rgb(194, 194, 235);
+}
+
+footer {
+  background-color: blue;
+  color: aliceblue;
+  height: 3vh;
+  text-align: center;
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="main.css" rel="stylesheet">
+  <script src="build/main.js" type="module"></script>
+</head>
+
+<body>
+  <div id="nav">
+    <div id="logo">
+      <img
+          src="../../art_assets/Fin_fanatic.png"
+          alt="Placeholder for a site logo"
+        />
+    </div>
+    <button id="login">Login</button>
+  </div>
+  <div id="main">
+    <div id="left">
+      <div id="searchBar">
+        <button id="search">Search</button>
+        <input type="text" placeholder="Search word, such as restaurant name">
+        <div id="filterButtons">
+          <button id="sodexo">Sodexo</button>
+          <button id="compass">Compass Group</button>
+          <button id="espoo">Espoo</button>
+          <button id="helsinki">Helsinki</button>
+          <button id="reset">Show all</button>
+        </div>
+      </div>
+      <div id="restaurants">
+        <table>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+        </tr>
+        <!-- add restaurants here -->
+      </table>
+      </div>
+    </div>
+    <div id="right">
+      <div id="infoButtons">
+        <button id="daily">Daily Menu</button>
+        <button id="weekly">Weekly Menu</button>
+        <button id="userInfo">User Info</button>
+      </div>
+      <div id="info"></div>
+      <!-- add weekly menu, daily menu, or user info here -->
+    </div>
+  </div>
+
+  <!-- modals -->
+  <dialog id="loginDialog">
+    <form id="loginForm">
+      <div class="formInput">
+        <input type="text" id="loginUsername" name="username">
+        <label for="username">Username</label>
+      </div>
+      <div class="formInput">
+        <input type="text" id="loginPassword" name="password">
+        <label for="password">Password</label>
+      </div>
+      <div class="formInput">
+        <input type="submit" value="Login" class="button">
+      </div>
+    </form>
+    <p id="registerLink">Don't have an account? Register by clicking this text!</p>
+  </dialog>
+  <dialog id="registerDialog">
+    <form id="registerForm">
+      <div class="formInput">
+        <input type="text" id="registerUsername" name="username">
+        <label for="username">Username</label>
+      </div>
+      <div class="formInput">
+        <input type="text" id="registerPassword" name="password">
+        <label for="password">Password</label>
+      </div>
+      <div class="formInput">
+        <input type="text" id="registerEmail" name="email">
+        <label for="email">Email</label>
+      </div>
+      <div class="formInput">
+        <input type="submit" value="Register" class="button">
+      </div>
+    </form>
+    <p id="loginLink">Already have an account? Go back to login by clicking this text.</p>
+  </dialog>
+  <footer>Stu.L</footer>
+</body>
+
+</html>
