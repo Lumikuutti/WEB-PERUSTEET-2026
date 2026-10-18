@@ -141,12 +141,16 @@ userInfo.addEventListener('click', async () => {
 });
 const modalLogin = document.querySelector('#loginDialog');
 const modalRegister = document.getElementById('registerDialog');
+const update = document.querySelector('#update');
+const avatarUpload = document.querySelector('#avatarUpload');
 const loginClose = document.querySelector('#loginClose');
 const registerClose = document.querySelector('#registerClose');
-if (!loginClose || !registerClose) {
+const updateClose = document.querySelector('#updateClose');
+const avatarClose = document.querySelector('#avatarClose');
+if (!loginClose || !registerClose || !updateClose || !avatarClose) {
     throw new Error('Close buttons not found');
 }
-if (!modalLogin || !modalRegister) {
+if (!modalLogin || !modalRegister || !update || !avatarUpload) {
     throw new Error('Modals not found');
 }
 loginClose.addEventListener('click', () => {
@@ -154,6 +158,12 @@ loginClose.addEventListener('click', () => {
 });
 registerClose.addEventListener('click', () => {
     modalRegister.close();
+});
+updateClose.addEventListener('click', () => {
+    update.close();
+});
+avatarClose.addEventListener('click', () => {
+    avatarUpload.close();
 });
 if (!login) {
     throw new Error('Login button not found');
@@ -178,6 +188,22 @@ const createTable = (restaurants) => {
     table.innerHTML = '';
     restaurants.forEach((restaurant) => {
         const tr = restaurantRow(restaurant);
+        const favorite = document.createElement('td');
+        favorite.innerText = '☆';
+        favorite.classList.add('star');
+        favorite.addEventListener('click', async () => {
+            const user = {
+                favoriteRestaurant: restaurant.name,
+            };
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Login first');
+                return;
+            }
+            const updateResult = await updateUserData(user, token);
+            console.log(updateResult);
+        });
+        tr.appendChild(favorite);
         table.appendChild(tr);
         tr.addEventListener('click', async () => {
             try {
@@ -261,6 +287,16 @@ const success = async (pos) => {
             console.log(helsinkiRestaurants);
             createTable(helsinkiRestaurants);
         });
+        const search = document.querySelector('#search');
+        const searchValue = document.querySelector('#searchValue');
+        if (!search || !searchValue) {
+            throw new Error('Search element(s) not found.');
+        }
+        search.addEventListener('click', () => {
+            let searchRestaurants = restaurants.filter((restaurant) => restaurant.name.includes(searchValue.value));
+            console.log(searchRestaurants);
+            createTable(searchRestaurants);
+        });
         if (!resetBtn) {
             throw new Error('Reset button not found');
         }
@@ -274,12 +310,16 @@ const success = async (pos) => {
 };
 const loginForm = document.querySelector('#loginForm');
 const registerForm = document.querySelector('#registerForm');
+const profileForm = document.querySelector('#updateForm');
+const avatarForm = document.querySelector('#avatarForm');
 const loginUsernameInput = document.querySelector('#loginUsername');
 const loginPasswordInput = document.querySelector('#loginPassword');
 const registerUsernameInput = document.querySelector('#registerUsername');
 const registerPasswordInput = document.querySelector('#registerPassword');
 const registerEmailInput = document.querySelector('#registerEmail');
-if (!loginForm || !registerForm) {
+const profileUsernameInput = document.querySelector('#updateUsername');
+const profileEmailInput = document.querySelector('#updateEmail');
+if (!loginForm || !registerForm || !profileForm || !avatarForm) {
     throw new Error('Forms not found.');
 }
 const loginFunction = async () => {
@@ -311,6 +351,17 @@ const registerFunction = async () => {
     };
     return await fetchData(apiUrl + '/users', registerOptions);
 };
+const updateUserData = async (user, token) => {
+    const updateOptions = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(user),
+    };
+    return await fetchData(apiUrl + '/users', updateOptions);
+};
 const addUserDataToDom = (user) => {
     info.innerHTML = '';
     const { avatar, email, username, favouriteRestaurant } = user;
@@ -323,6 +374,20 @@ const addUserDataToDom = (user) => {
     if (favouriteRestaurant) {
         info.innerHTML += `<p>${favouriteRestaurant}</p>`;
     }
+    info.innerHTML +=
+        `<button id="updateBtn">Change Username/Email</button>
+    <button id="avatarBtn">Change/Add Avatar</button>`;
+    const updateBtn = document.querySelector('#updateBtn');
+    const avatarBtn = document.querySelector('#avatarBtn');
+    if (!updateBtn || !avatarBtn) {
+        throw new Error('Update buttons not found.');
+    }
+    updateBtn.addEventListener('click', () => {
+        update.showModal();
+    });
+    avatarBtn.addEventListener('click', () => {
+        avatarUpload.showModal();
+    });
 };
 const getUserData = async (token) => {
     const udataOptions = {
@@ -371,6 +436,41 @@ registerForm.addEventListener('submit', async (evt) => {
     localStorage.setItem('token', user.token);
     addUserDataToDom(user.data);
     modalRegister.close();
+});
+avatarForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!(avatarForm instanceof HTMLFormElement) || !token) {
+        return;
+    }
+    const formData = new FormData(avatarForm);
+    const options = {
+        method: 'POST',
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
+        body: formData,
+    };
+    const avatarResult = await fetchData(apiUrl + '/users/avatar', options);
+    const updateResult = await updateUserData({ avatar: avatarResult.data.avatar }, token);
+    addUserDataToDom(updateResult.data);
+    avatarUpload.close();
+});
+profileForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const user = {
+        username: profileUsernameInput?.value,
+        email: profileEmailInput?.value,
+    };
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Login first');
+        return;
+    }
+    const updateResult = await updateUserData(user, token);
+    console.log(updateResult);
+    addUserDataToDom(updateResult.data);
+    update.close();
 });
 checkToken();
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

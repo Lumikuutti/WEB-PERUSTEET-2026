@@ -23,7 +23,7 @@
     <div id="left">
       <div id="searchBar">
         <button id="search">Search</button>
-        <input type="text" placeholder="Search word, such as restaurant name">
+        <input id="searchValue" type="text" placeholder="Search for restaurants by name">
         <div id="filterButtons">
           <button id="sodexo">Sodexo</button>
           <button id="compass">Compass Group</button>
@@ -92,6 +92,37 @@
       </div>
     </form>
     <p id="loginLink">Already have an account? Go back to login by clicking this text.</p>
+  </dialog>
+  <dialog id="update">
+    <button id="updateClose">Close</button>
+    <h1>Update User Information?</h1>
+    <p>Please note both fields are recquired.</p>
+    <form id="updateForm">
+      <div class="formInput">
+        <input type="text" id="updateUsername" name="username">
+        <label for="username">Username</label>
+      </div>
+      <div class="formInput">
+        <input type="text" id="updateEmail" name="email">
+        <label for="email">Email</label>
+      </div>
+      <div class="formInput">
+        <input type="submit" value="Update" class="button">
+      </div>
+    </form>
+  </dialog>
+  <dialog id="avatarUpload">
+    <button id="avatarClose">Close</button>
+    <h1>Upload an Avatar?</h1>
+    <form id="avatarForm">
+      <div class="formInput">
+        <input id="avatar" type="file" name="avatar" />
+        <label for="avatar">Choose image</label>
+      </div>
+      <div class="formInput">
+        <input type="submit" value="Upload" class="button">
+      </div>
+    </form>
   </dialog>
   <footer>Stu.L</footer>
 </body>

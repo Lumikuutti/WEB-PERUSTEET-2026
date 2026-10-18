@@ -20,6 +20,7 @@ interface UpdateUser {
   username?: string;
   email?: string;
   avatar?: string;
+  favoriteRestaurant?: string
 }
 
 interface CreateUser {
