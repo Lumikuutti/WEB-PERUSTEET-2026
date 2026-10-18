@@ -87,6 +87,7 @@ const fetchData = async (url, options = {}) => {
 };
 
 const apiUrl = 'https://media1.edu.metropolia.fi/restaurant/api/v1';
+const uploadUrl = 'https://media1.edu.metropolia.fi/restaurant/uploads/';
 const positionOptions = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -136,16 +137,22 @@ weekly.addEventListener('click', async () => {
 });
 userInfo.addEventListener('click', async () => {
     info.innerHTML = '';
+    checkToken();
 });
 const modalLogin = document.querySelector('#loginDialog');
 const modalRegister = document.getElementById('registerDialog');
+const loginClose = document.querySelector('#loginClose');
+const registerClose = document.querySelector('#registerClose');
+if (!loginClose || !registerClose) {
+    throw new Error('Close buttons not found');
+}
 if (!modalLogin || !modalRegister) {
     throw new Error('Modals not found');
 }
-modalLogin.addEventListener('click', () => {
+loginClose.addEventListener('click', () => {
     modalLogin.close();
 });
-modalRegister.addEventListener('click', () => {
+registerClose.addEventListener('click', () => {
     modalRegister.close();
 });
 if (!login) {
@@ -265,4 +272,105 @@ const success = async (pos) => {
         info.innerHTML = errorModal(error.message);
     }
 };
+const loginForm = document.querySelector('#loginForm');
+const registerForm = document.querySelector('#registerForm');
+const loginUsernameInput = document.querySelector('#loginUsername');
+const loginPasswordInput = document.querySelector('#loginPassword');
+const registerUsernameInput = document.querySelector('#registerUsername');
+const registerPasswordInput = document.querySelector('#registerPassword');
+const registerEmailInput = document.querySelector('#registerEmail');
+if (!loginForm || !registerForm) {
+    throw new Error('Forms not found.');
+}
+const loginFunction = async () => {
+    const credentials = {
+        username: loginUsernameInput?.value,
+        password: loginPasswordInput?.value
+    };
+    const loginOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+    };
+    return await fetchData(apiUrl + '/auth/login', loginOptions);
+};
+const registerFunction = async () => {
+    const credentials = {
+        username: registerUsernameInput?.value,
+        password: registerPasswordInput?.value,
+        email: registerEmailInput?.value
+    };
+    const registerOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+    };
+    return await fetchData(apiUrl + '/users', registerOptions);
+};
+const addUserDataToDom = (user) => {
+    info.innerHTML = '';
+    const { avatar, email, username, favouriteRestaurant } = user;
+    info.innerHTML =
+        `
+  <img src="${uploadUrl + avatar}" alt="User Avatar">
+  <h1>${username}</h1>
+  <p>${email}</p>
+  `;
+    if (favouriteRestaurant) {
+        info.innerHTML += `<p>${favouriteRestaurant}</p>`;
+    }
+};
+const getUserData = async (token) => {
+    const udataOptions = {
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
+    };
+    return await fetchData(apiUrl + '/users/token', udataOptions);
+};
+const checkToken = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return;
+    }
+    try {
+        const userData = await getUserData(token);
+        addUserDataToDom(userData);
+    }
+    catch (error) {
+        alert(error.message);
+    }
+};
+loginForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const user = await loginFunction();
+    console.log(user);
+    localStorage.setItem('token', user.token);
+    addUserDataToDom(user.data);
+});
+registerForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const newUser = await registerFunction();
+    console.log(newUser);
+    const credentials = {
+        username: registerUsernameInput?.value,
+        password: registerPasswordInput?.value
+    };
+    const loginOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+    };
+    const user = await fetchData(apiUrl + '/auth/login', loginOptions);
+    localStorage.setItem('token', user.token);
+    addUserDataToDom(user.data);
+    modalRegister.close();
+});
+checkToken();
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

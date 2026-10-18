@@ -69,18 +69,26 @@ weekly.addEventListener('click', async () => {
 
 userInfo.addEventListener('click', async () => {
   info.innerHTML = '';
+  checkToken();
 })
 
 const modalLogin = document.querySelector('#loginDialog') as HTMLDialogElement | null;
 const modalRegister = document.getElementById('registerDialog') as HTMLDialogElement | null;
+const loginClose = document.querySelector('#loginClose')
+const registerClose = document.querySelector('#registerClose')
+
+if (!loginClose || !registerClose) {
+  throw new Error('Close buttons not found');
+}
+
 if (!modalLogin || !modalRegister) {
   throw new Error('Modals not found');
 }
-modalLogin.addEventListener('click', () => {
+loginClose.addEventListener('click', () => {
   modalLogin.close();
 });
 
-modalRegister.addEventListener('click', () => {
+registerClose.addEventListener('click', () => {
   modalRegister.close();
 });
 
@@ -235,5 +243,121 @@ const success = async (pos: GeolocationPosition) => {
     info.innerHTML = errorModal((error as Error).message);
   }
 };
+
+
+const loginForm = document.querySelector('#loginForm');
+const registerForm = document.querySelector('#registerForm');
+
+const loginUsernameInput = document.querySelector('#loginUsername') as HTMLInputElement | null;
+const loginPasswordInput = document.querySelector('#loginPassword') as HTMLInputElement | null;
+
+const registerUsernameInput = document.querySelector('#registerUsername') as HTMLInputElement | null;
+const registerPasswordInput = document.querySelector('#registerPassword') as HTMLInputElement | null;
+const registerEmailInput = document.querySelector('#registerEmail') as HTMLInputElement | null;
+
+if (!loginForm || !registerForm) {
+  throw new Error('Forms not found.')
+}
+
+const loginFunction = async (): Promise<LoginUser> => {
+  const credentials = {
+    username: loginUsernameInput?.value,
+    password: loginPasswordInput?.value
+  }
+
+  const loginOptions: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  };
+  return await fetchData(apiUrl + '/auth/login', loginOptions);
+};
+
+const registerFunction = async (): Promise<CreateUser> => {
+  const credentials = {
+    username: registerUsernameInput?.value,
+    password: registerPasswordInput?.value,
+    email: registerEmailInput?.value
+  }
+
+  const registerOptions: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  };
+  return await fetchData(apiUrl + '/users', registerOptions);
+};
+
+const addUserDataToDom = (user: User): void => {
+  info.innerHTML = '';
+  const { avatar, email, username, favouriteRestaurant } = user
+  info.innerHTML =
+    `
+  <img src="${uploadUrl + avatar}" alt="User Avatar">
+  <h1>${username}</h1>
+  <p>${email}</p>
+  `
+  if (favouriteRestaurant) {
+    info.innerHTML += `<p>${favouriteRestaurant}</p>`
+  }
+};
+
+const getUserData = async (token: string): Promise<User> => {
+  const udataOptions: RequestInit = {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+  };
+  return await fetchData(apiUrl + '/users/token', udataOptions);
+};
+
+const checkToken = async (): Promise<void> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return;
+  }
+  try {
+    const userData = await getUserData(token);
+    addUserDataToDom(userData);
+  } catch (error) {
+    alert((error as Error).message);
+  }
+};
+
+loginForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
+  const user = await loginFunction();
+  console.log(user);
+  localStorage.setItem('token', user.token);
+  addUserDataToDom(user.data);
+});
+
+registerForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
+  const newUser = await registerFunction();
+  console.log(newUser);
+  const credentials = {
+    username: registerUsernameInput?.value,
+    password: registerPasswordInput?.value
+  }
+
+  const loginOptions: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  };
+  const user: LoginUser = await fetchData(apiUrl + '/auth/login', loginOptions);
+  localStorage.setItem('token', user.token);
+  addUserDataToDom(user.data);
+  modalRegister.close();
+});
+
+checkToken();
 
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);
