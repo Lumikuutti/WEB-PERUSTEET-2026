@@ -14,6 +14,7 @@
   font-family: sans-serif;
   width: 85%;
   height: 7vh;
+  color:  var(--bright-snow);
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -22,6 +23,10 @@
 #nav #logo img {
   height: 7vh;
   width: auto;
+}
+
+#nav h1 {
+  margin:2px;
 }
 
 body {
@@ -137,4 +142,8 @@ footer {
     flex: 0.4;
   }
 
+  #nav h1 {
+    flex-shrink: 3;
+    font-size: smaller;
+  }
 }
