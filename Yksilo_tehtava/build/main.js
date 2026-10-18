@@ -49,15 +49,15 @@ const restaurantWeekly = (restaurant, menu) => {
         html +=
             `
         <h4>${date}</h4>
-        <table>`;
-        day.courses.forEach((course) => {
-            const { name, diets, price } = course;
-            html += `
-            <tr>
+        <table>
+        <tr>
               <th>Course</th>
               <th>Diet</th>
               <th>Price</th>
-            </tr>
+            </tr>`;
+        day.courses.forEach((course) => {
+            const { name, diets, price } = course;
+            html += `
             <tr>
               <td>${name}</td>
               <td>${diets ?? ' - '}</td>
@@ -93,6 +93,50 @@ const positionOptions = {
     maximumAge: 0,
 };
 
+let chosenRestaurant;
+const login = document.querySelector('#login');
+const regLink = document.querySelector('#registerLink');
+const logLink = document.querySelector('#loginLink');
+const daily = document.querySelector('#daily');
+const weekly = document.querySelector('#weekly');
+const userInfo = document.querySelector('#userInfo');
+if (!daily || !weekly || !userInfo) {
+    throw new Error('Info buttons not found');
+}
+if (!regLink || !logLink) {
+    throw new Error('Modal links not found');
+}
+const info = document.getElementById('info');
+if (!info) {
+    throw new Error('Info section not found');
+}
+daily.addEventListener('click', async () => {
+    info.innerHTML = '';
+    if (!chosenRestaurant) {
+        info.innerHTML = '<p>Pick a restaurant first.</p>';
+    }
+    else {
+        const dailyMenu = await fetchData(apiUrl + `/restaurants/daily/${chosenRestaurant._id}/fi`);
+        console.log(dailyMenu);
+        const dailyMenuHtml = restaurantDaily(chosenRestaurant, dailyMenu);
+        info.insertAdjacentHTML('beforeend', dailyMenuHtml);
+    }
+});
+weekly.addEventListener('click', async () => {
+    info.innerHTML = '';
+    if (!chosenRestaurant) {
+        info.innerHTML = '<p>Pick a restaurant first.</p>';
+    }
+    else {
+        const weeklyMenu = await fetchData(apiUrl + `/restaurants/weekly/${chosenRestaurant._id}/fi`);
+        console.log(weeklyMenu);
+        const weeklyMenuHtml = restaurantWeekly(chosenRestaurant, weeklyMenu);
+        info.insertAdjacentHTML('beforeend', weeklyMenuHtml);
+    }
+});
+userInfo.addEventListener('click', async () => {
+    info.innerHTML = '';
+});
 const modalLogin = document.querySelector('#loginDialog');
 const modalRegister = document.getElementById('registerDialog');
 if (!modalLogin || !modalRegister) {
@@ -104,10 +148,20 @@ modalLogin.addEventListener('click', () => {
 modalRegister.addEventListener('click', () => {
     modalRegister.close();
 });
-const info = document.getElementById('info');
-if (!info) {
-    throw new Error('Info section not found');
+if (!login) {
+    throw new Error('Login button not found');
 }
+login.addEventListener('click', () => {
+    modalLogin.showModal();
+});
+regLink.addEventListener('click', () => {
+    modalLogin.close();
+    modalRegister.showModal();
+});
+logLink.addEventListener('click', () => {
+    modalRegister.close();
+    modalLogin.showModal();
+});
 const calculateDistance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 const createTable = (restaurants) => {
     const table = document.querySelector('table');
@@ -128,16 +182,13 @@ const createTable = (restaurants) => {
                 // add highlight
                 tr.classList.add('highlight');
                 // add restaurant data to modal
+                chosenRestaurant = restaurant;
                 info.innerHTML = '';
                 // fetch menu
                 const dailyMenu = await fetchData(apiUrl + `/restaurants/daily/${restaurant._id}/fi`);
                 console.log(dailyMenu);
                 const dailyMenuHtml = restaurantDaily(restaurant, dailyMenu);
                 info.insertAdjacentHTML('beforeend', dailyMenuHtml);
-                const weeklyMenu = await fetchData(apiUrl + `/restaurants/weekly/${restaurant._id}/fi`);
-                console.log(weeklyMenu);
-                const weeklyMenuHtml = restaurantWeekly(restaurant, weeklyMenu);
-                info.insertAdjacentHTML('beforeend', weeklyMenuHtml);
             }
             catch (error) {
                 info.innerHTML = errorModal(error.message);

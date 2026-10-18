@@ -7,7 +7,69 @@ import { User, LoginUser, UpdateUser, CreateUser } from './interfaces/User'
 import { UpdateResult } from './interfaces/UpdateResult';
 import { UploadResult } from './interfaces/UploadResult';
 
-let chosenRestaurant;
+let chosenRestaurant: Restaurant;
+
+const login = document.querySelector('#login');
+const regLink = document.querySelector('#registerLink')
+const logLink = document.querySelector('#loginLink')
+const daily = document.querySelector('#daily');
+const weekly = document.querySelector('#weekly');
+const userInfo = document.querySelector('#userInfo');
+
+if (!daily || !weekly || !userInfo) {
+  throw new Error('Info buttons not found');
+}
+
+if (!regLink || !logLink) {
+  throw new Error('Modal links not found');
+}
+
+const info = document.getElementById('info');
+
+if (!info) {
+  throw new Error('Info section not found');
+}
+
+daily.addEventListener('click', async () => {
+  info.innerHTML = '';
+
+  if (!chosenRestaurant) {
+    info.innerHTML = '<p>Pick a restaurant first.</p>'
+  }
+
+  else {
+
+    const dailyMenu = await fetchData<dailyMenu>(
+      apiUrl + `/restaurants/daily/${chosenRestaurant._id}/fi`
+    );
+    console.log(dailyMenu);
+
+    const dailyMenuHtml = restaurantDaily(chosenRestaurant, dailyMenu);
+    info.insertAdjacentHTML('beforeend', dailyMenuHtml);
+  }
+});
+
+weekly.addEventListener('click', async () => {
+  info.innerHTML = '';
+
+  if (!chosenRestaurant) {
+    info.innerHTML = '<p>Pick a restaurant first.</p>'
+  }
+
+  else {
+    const weeklyMenu = await fetchData<weeklyMenu>(
+      apiUrl + `/restaurants/weekly/${chosenRestaurant._id}/fi`
+    );
+    console.log(weeklyMenu);
+
+    const weeklyMenuHtml = restaurantWeekly(chosenRestaurant, weeklyMenu);
+    info.insertAdjacentHTML('beforeend', weeklyMenuHtml);
+  }
+});
+
+userInfo.addEventListener('click', async () => {
+  info.innerHTML = '';
+})
 
 const modalLogin = document.querySelector('#loginDialog') as HTMLDialogElement | null;
 const modalRegister = document.getElementById('registerDialog') as HTMLDialogElement | null;
@@ -22,11 +84,23 @@ modalRegister.addEventListener('click', () => {
   modalRegister.close();
 });
 
-const info = document.getElementById('info');
-
-if (!info) {
-  throw new Error('Info section not found');
+if (!login) {
+  throw new Error('Login button not found');
 }
+
+login.addEventListener('click', () => {
+  modalLogin.showModal()
+})
+
+regLink.addEventListener('click', () => {
+  modalLogin.close()
+  modalRegister.showModal()
+})
+
+logLink.addEventListener('click', () => {
+  modalRegister.close()
+  modalLogin.showModal()
+})
 
 const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number =>
   Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -51,6 +125,8 @@ const createTable = (restaurants: Restaurant[]) => {
         tr.classList.add('highlight');
         // add restaurant data to modal
 
+        chosenRestaurant = restaurant;
+
         info.innerHTML = '';
 
         // fetch menu
@@ -61,15 +137,6 @@ const createTable = (restaurants: Restaurant[]) => {
 
         const dailyMenuHtml = restaurantDaily(restaurant, dailyMenu);
         info.insertAdjacentHTML('beforeend', dailyMenuHtml);
-
-        const weeklyMenu = await fetchData<weeklyMenu>(
-          apiUrl + `/restaurants/weekly/${restaurant._id}/fi`
-        );
-        console.log(weeklyMenu);
-
-        const weeklyMenuHtml = restaurantWeekly(restaurant, weeklyMenu);
-        info.insertAdjacentHTML('beforeend', weeklyMenuHtml);
-
 
       } catch (error) {
         info.innerHTML = errorModal((error as Error).message);

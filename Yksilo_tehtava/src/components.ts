@@ -53,17 +53,17 @@ const restaurantWeekly = (restaurant: Restaurant, menu: weeklyMenu) => {
     html +=
       `
         <h4>${date}</h4>
-        <table>`
+        <table>
+        <tr>
+              <th>Course</th>
+              <th>Diet</th>
+              <th>Price</th>
+            </tr>`
 
 
     day.courses.forEach((course) => {
       const { name, diets, price } = course;
       html += `
-            <tr>
-              <th>Course</th>
-              <th>Diet</th>
-              <th>Price</th>
-            </tr>
             <tr>
               <td>${name}</td>
               <td>${diets ?? ' - '}</td>
