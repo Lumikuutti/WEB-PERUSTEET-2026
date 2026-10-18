@@ -1,5 +1,16 @@
+:root {
+--bright-snow: #F6FBFCff;
+--cornflower-blue: #5B8CEEff;
+--baby-blue-ice: #7CB6EFff;
+--icy-blue: #B8E2FDff;
+--smart-blue: rgb(42, 96, 204);
+--dusk-blue: rgb(37, 66, 121);
+--dark-blue: rgb(5, 19, 45);
+--light-cyan: rgb(179, 235, 249);
+}
+
 #nav {
-  background-color: aquamarine;
+  background-color: var(--dusk-blue);
   font-family: sans-serif;
   width: 85%;
   height: 7vh;
@@ -14,7 +25,7 @@
 }
 
 body {
-  background-color: #f0f0f0;
+  background-color: var(--dark-blue);
   font-family: sans-serif;
   margin: 0;
   padding: 0;
@@ -24,7 +35,7 @@ body {
 }
 
 #main {
-  background-color: rgb(107, 175, 153);
+  background-color: var(--cornflower-blue);
   width: 85%;
   height: 90vh;
   margin: auto;
@@ -32,7 +43,7 @@ body {
 }
 
 #left {
-  background-color: beige;
+  background-color: var(--baby-blue-ice);
   display: flex;
   flex-direction: column;
   flex: 1.5;
@@ -67,6 +78,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 #infoButtons {
@@ -76,11 +88,15 @@ body {
 #info {
   flex: 16;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -104,8 +120,21 @@ td {
 }
 
 footer {
-  background-color: blue;
-  color: aliceblue;
+  background-color: var(--dusk-blue);
+  color: var(--bright-snow);
   height: 3vh;
   text-align: center;
+}
+
+@media screen and (max-width: 1030px) {
+  #main {
+    flex-direction: column;
+    padding-bottom: 20px;
+    overflow: auto;
+  }
+
+  #searchBar {
+    flex: 0.4;
+  }
+
 }
